@@ -2,7 +2,11 @@ from langchain.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
+from redundant_filter_retriever import ReduntdantFilterRetriever
 from dotenv import load_dotenv
+import langchain
+
+langchain.debug = True
 
 load_dotenv()
 
@@ -14,7 +18,10 @@ db = Chroma(
     embedding_function=embeddings
 )
 
-retriever = db.as_retriever()
+retriever = ReduntdantFilterRetriever(
+    embeddings=embeddings,
+    chroma=db
+)
 
 chain = RetrievalQA.from_chain_type(
     llm=chat,
@@ -23,7 +30,7 @@ chain = RetrievalQA.from_chain_type(
 )
 
 
-result = chain.run("What is the longest word in the english language?")
+result = chain.run("What is a interesting fact in the english language?")
 
 
 print(result)
