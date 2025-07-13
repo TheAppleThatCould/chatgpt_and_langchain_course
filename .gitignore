@@ -2,3 +2,5 @@ venv/
 .env
 facts/emb
 facts/__pycache__
+agents/handlers/__pycache__
+agents/tools/__pycache__
